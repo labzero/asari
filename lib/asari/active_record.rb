@@ -144,7 +144,7 @@ class Asari
         records = self.asari_instance.search(term, options)
         ids = records.map { |id| id.to_i }
 
-        records.replace(Array(self.where("id in (?)", ids)))
+        records.replace(Array(self.where("id in (?)", ids).order("field(id, #{ids.join(',')})")))
       end
 
       # Public: method for handling errors from Asari document updates. By

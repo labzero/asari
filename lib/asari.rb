@@ -86,6 +86,12 @@ class Asari
       url << "&rank=#{rank}"
     end
 
+    if options[:parsing] && options[:parsing][:parser] && options[:parsing][:options] && @api_version == '2013-01-01'
+      # parser string e.g. structured, lucene, dismax
+      # options hash e.g. { fields: ['recipe_name^10','ingredients^9','tags_separated_by_spaces^1','description^1','directions^1'] }
+      url << "&q.parser=#{options[:parsing][:parser]}&q.options=#{CGI.escape(options[:parsing][:options].to_json.to_s)}"
+    end
+
     begin
       response = HTTParty.get(url)
     rescue Exception => e
